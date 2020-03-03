@@ -1,3 +1,3 @@
 # Stack Go
 
-Simple stack realization based on slice.
+Simple stack datastructure realization based on slice.
