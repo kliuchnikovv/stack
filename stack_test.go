@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+// TODO: make tests great again
+
 const numberOfIterations = 1000000
 
 func TestStackPop(t *testing.T) {
@@ -14,14 +16,14 @@ func TestStackPop(t *testing.T) {
 	for i := 0; i < numberOfIterations; i++ {
 		stack.Push(i)
 	}
-	assert.Equal(t, numberOfIterations, stack.Len())
+	assert.Equal(t, numberOfIterations, stack.Size())
 	for i, item := range stack.PopN(numberOfIterations) {
 		assert.Equal(t, (numberOfIterations-1)-i, item.(int))
 	}
 	v, ok := stack.Pop()
 	assert.Nil(t, v)
 	assert.False(t, ok)
-	assert.Equal(t, 0, stack.Len())
+	assert.Equal(t, 0, stack.Size())
 }
 
 func BenchmarkStack_Push(b *testing.B) {
@@ -34,12 +36,11 @@ func BenchmarkStack_Push(b *testing.B) {
 }
 
 func BenchmarkStack_Pop(b *testing.B) {
-	b.StopTimer()
 	stack := Stack{}
 	for i := 0; i < numberOfIterations; i++ {
 		stack.Push(i)
 	}
-	b.StartTimer()
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		st := stack
 		for j := numberOfIterations; j > 0; j-- {
@@ -50,9 +51,10 @@ func BenchmarkStack_Pop(b *testing.B) {
 
 func BenchmarkPushPopRandomly(b *testing.B) {
 	stack := Stack{}
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for j := 0; j < numberOfIterations; j++ {
-			if stack.Len() == 0 || rand.Int() == 0 {
+			if stack.Size() == 0 || rand.Int() == 0 {
 				stack.Push(j)
 			} else {
 				stack.Pop()

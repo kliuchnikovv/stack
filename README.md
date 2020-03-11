@@ -1,3 +1,3 @@
-# Stack Go
+# Stack for Golang
 
-Simple stack datastructure realization based on slice.
+Stack - implementation of stack data structure for Golang.
