@@ -21,3 +21,27 @@ func TestStackPop(t *testing.T) {
 	assert.False(t, ok)
 	assert.Equal(t, 0, stack.Len())
 }
+
+func BenchmarkStack_Push(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		stack := Stack{}
+		for i := 0; i < 1000000; i++ {
+			stack.Push(i)
+		}
+	}
+}
+
+func BenchmarkStack_Pop(b *testing.B) {
+	b.StopTimer()
+	stack := Stack{}
+	for i := 0; i < 1000000; i++ {
+		stack.Push(i)
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		st := stack
+		for i := 1000000; i > 0; i-- {
+			st.Pop()
+		}
+	}
+}
