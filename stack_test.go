@@ -6,15 +6,12 @@ import (
 	"testing"
 )
 
-// TODO: make tests great again
-// TODO: test concurrency?
-
 const numberOfIterations = 100000
 
 func TestStack(t *testing.T) {
 	t.Parallel()
 
-	stack := new(Stack)
+	stack := New(numberOfIterations)
 	for i := 0; i < numberOfIterations; i++ {
 		stack.Push(i)
 	}
@@ -83,7 +80,7 @@ func TestStack_Pop(t *testing.T) {
 func TestStack_PopN(t *testing.T) {
 	t.Parallel()
 
-	stack := new(Stack)
+	stack := New(10)
 
 	items := stack.PopN(10)
 	assert.Zero(t, len(items))
@@ -155,7 +152,7 @@ func TestStack_lastIndex(t *testing.T) {
 
 func BenchmarkStack_Push(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		stack := Stack{}
+		stack := New(numberOfIterations)
 		for j := 0; j < numberOfIterations; j++ {
 			stack.Push(j)
 		}
@@ -163,7 +160,7 @@ func BenchmarkStack_Push(b *testing.B) {
 }
 
 func BenchmarkStack_Pop(b *testing.B) {
-	stack := Stack{}
+	stack := New(numberOfIterations)
 	for i := 0; i < numberOfIterations; i++ {
 		stack.Push(i)
 	}
@@ -177,7 +174,7 @@ func BenchmarkStack_Pop(b *testing.B) {
 }
 
 func BenchmarkStack_PushAndPopRandomly(b *testing.B) {
-	stack := Stack{}
+	stack := New(numberOfIterations)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for j := 0; j < numberOfIterations; j++ {
