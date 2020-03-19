@@ -8,6 +8,9 @@ type Stack struct {
 }
 
 func New(capacity int) *Stack {
+	if capacity < 0 {
+		capacity = 0
+	}
 	return &Stack{buffer: make([]interface{}, 0, capacity)}
 }
 
