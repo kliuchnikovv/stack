@@ -7,6 +7,10 @@ type Stack struct {
 	size   int
 }
 
+func New(capacity int) *Stack {
+	return &Stack{buffer: make([]interface{}, 0, capacity)}
+}
+
 // Push - adds a new element to the top of the stack.
 func (stack *Stack) Push(value interface{}) {
 	if stack.size == len(stack.buffer) {
