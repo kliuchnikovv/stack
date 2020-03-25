@@ -45,7 +45,8 @@ func (stack *Stack) Pop() (interface{}, bool) {
 	return v, ok
 }
 
-// PopN - returns N items (or less) from the top of the stack in the order in which they are retrieved (LIFO).
+// PopN - returns N items (or less) from the top of the stack
+// in the order in which they are retrieved (LIFO).
 func (stack *Stack) PopN(n int) []interface{} {
 	var result = make([]interface{}, 0, n)
 	if n <= 0 {
