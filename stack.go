@@ -2,11 +2,15 @@
 // based on slice data structure.
 package stack
 
+// Stack implements simple LIFO data structure.
+// If concurrent access from multiple locations
+// needed, use SyncedStack.
 type Stack struct {
 	buffer []interface{}
 	size   int
 }
 
+// New - initialises new stack with given capacity.
 func New(capacity int) *Stack {
 	if capacity < 0 {
 		capacity = 0
@@ -47,12 +51,9 @@ func (stack *Stack) PopN(n int) []interface{} {
 	if n <= 0 {
 		return result
 	}
-	for i := n; i > 0; i-- {
-		item, ok := stack.Pop()
-		if !ok {
-			return result
-		}
-		result = append(result, item)
+	for i := 0; i < n && stack.size > 0; i++ {
+		result = append(result, stack.buffer[stack.lastIndex()])
+		stack.size--
 	}
 	return result
 }
