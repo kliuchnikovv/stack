@@ -20,7 +20,7 @@ func TestPopNFailWhileRoutinesPop(t *testing.T) {
 
 	for i := 0; i < 1000; i++ {
 		result := sync.Map{}
-
+		st := stack
 		startWG.Add(5)
 		endWG.Add(5)
 		for j := 0; j < 5; j++ {
@@ -29,20 +29,19 @@ func TestPopNFailWhileRoutinesPop(t *testing.T) {
 				startWG.Done()
 				startWG.Wait()
 
-				v, ok := stack.Pop()
+				v, ok := st.Pop()
 				assert.True(t, ok)
-
 				_, ok = result.LoadOrStore(v.(int), true)
 				assert.False(t, ok)
 			}()
 		}
 
 		startWG.Wait()
-		values := stack.PopN(5)
+		values := st.PopN(5)
 		endWG.Wait()
 
 		assert.Less(t, 0, len(values))
-		assert.Zero(t, stack.size, values)
+		assert.Zero(t, st.size, values)
 
 		first := values[0].(int)
 		for j := 1; j < len(values); j++ {
