@@ -1,4 +1,7 @@
 name: Go
+env:
+  GO111MODULE: on
+  GOARCH: 386
 
 on:
   push:
