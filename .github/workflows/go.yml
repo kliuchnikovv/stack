@@ -1,14 +1,8 @@
 name: Go
-env:
-  GO111MODULE: on
-  GOARCH: 386
-  GOROOT: /go
 
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
 
@@ -34,14 +28,17 @@ jobs:
             dep ensure
         fi
 
+    - name: Go Formatter
+      uses: sladyn98/auto-go-format@v0.0.1
+      `
     - name: Build
       run: go build -v .
       
     - name: Test
       run: go test ./...
         
-    - name: GolangCI-Linter
+    - name: Lint
       uses: Mushus/golangci-linter@v1.1.2
       
-    - name: Go Release Binary
-      uses: ngs/go-release.action@v1.0.2 
+    - name: Go report card
+      uses: creekorful/goreportcard-action@v1.0
