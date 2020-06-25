@@ -39,8 +39,8 @@ jobs:
     - name: Test
       run: go test ./...
         
-    - name: golangci-lint
-      uses: actions-contrib/golangci-lint@v1
+    - name: GolangCI-Linter
+      uses: Mushus/golangci-linter@v1.1.2
       
     - name: Go Release Binary
       uses: ngs/go-release.action@v1.0.2 
