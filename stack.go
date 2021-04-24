@@ -69,6 +69,13 @@ func (stack *Stack) IsEmpty() bool {
 	return stack.size == 0
 }
 
+// ToSlice - returns slice representation of stack
+func (stack *Stack) ToSlice() []interface{} {
+	var result = make([]interface{}, len(stack.buffer))
+	copy(result, stack.buffer)
+	return result
+}
+
 // lastIndex - returns index of last element in the stack's buffer.
 func (stack *Stack) lastIndex() int {
 	if stack.size == 0 {
