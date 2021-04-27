@@ -71,8 +71,10 @@ func (stack *Stack) IsEmpty() bool {
 
 // ToSlice - returns slice representation of stack
 func (stack *Stack) ToSlice() []interface{} {
-	var result = make([]interface{}, len(stack.buffer))
-	copy(result, stack.buffer)
+	var result = make([]interface{}, stack.size)
+	for i := 0; i < len(result); i++ {
+		result[i] = stack.buffer[i]
+	}
 	return result
 }
 
