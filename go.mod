@@ -1,4 +1,4 @@
-module github.com/KlyuchnikovV/stack
+module github.com/kliuchnikovv/stack
 
 go 1.13
 
