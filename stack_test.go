@@ -14,14 +14,14 @@ func TestStack(t *testing.T) {
 
 	stack := New[int](numberOfIterations)
 	for i := 0; i < numberOfIterations; i++ {
-		stack.Push(&i)
+		stack.Push(i)
 	}
 	assert.Equal(t, numberOfIterations, stack.Size())
 	for i, item := range stack.PopN(numberOfIterations) {
-		assert.Equal(t, (numberOfIterations-1)-i, *item)
+		assert.Equal(t, (numberOfIterations-1)-i, item)
 	}
 	v, ok := stack.Pop()
-	assert.Nil(t, v)
+	assert.Zero(t, v)
 	assert.False(t, ok)
 	assert.Zero(t, stack.Size())
 }
@@ -32,16 +32,16 @@ func TestStack_Push(t *testing.T) {
 	stack := new(Stack[int])
 
 	stack.size = 1
-	assert.Panics(t, func() { stack.Push(&stack.size) })
+	assert.Panics(t, func() { stack.Push(stack.size) })
 
 	stack.size = -1
-	assert.Panics(t, func() { stack.Push(&stack.size) })
+	assert.Panics(t, func() { stack.Push(stack.size) })
 
 	stack.size = 0
-	assert.NotPanics(t, func() { stack.Push(&stack.size) })
+	assert.NotPanics(t, func() { stack.Push(stack.size) })
 	assert.Equal(t, 1, stack.size)
 	assert.Equal(t, 1, len(stack.buffer))
-	assert.Equal(t, 1, *stack.buffer[0])
+	assert.Equal(t, 0, stack.buffer[0])
 }
 
 func TestStack_Peek(t *testing.T) {
@@ -51,14 +51,14 @@ func TestStack_Peek(t *testing.T) {
 
 	v, ok := stack.Peek()
 	assert.False(t, ok)
-	assert.Nil(t, v)
+	assert.Zero(t, v)
 
 	var i = 0
-	stack.Push(&i)
+	stack.Push(i)
 
 	v, ok = stack.Peek()
 	assert.True(t, ok)
-	assert.Equal(t, 0, *v)
+	assert.Equal(t, 0, v)
 	assert.Equal(t, 1, stack.size)
 }
 
@@ -69,14 +69,14 @@ func TestStack_Pop(t *testing.T) {
 
 	v, ok := stack.Pop()
 	assert.False(t, ok)
-	assert.Nil(t, v)
+	assert.Zero(t, v)
 
 	var i = 0
-	stack.Push(&i)
+	stack.Push(i)
 
 	v, ok = stack.Pop()
 	assert.True(t, ok)
-	assert.Equal(t, 0, *v)
+	assert.Equal(t, 0, v)
 	assert.Equal(t, 0, stack.size)
 }
 
@@ -89,19 +89,19 @@ func TestStack_PopN(t *testing.T) {
 	assert.Zero(t, len(items))
 
 	for i := 0; i < 10; i++ {
-		stack.Push(&i)
+		stack.Push(i)
 	}
 
 	items = stack.PopN(5)
 	assert.Equal(t, 5, len(items))
 	for i, item := range items {
-		assert.Equal(t, 9-i, *item)
+		assert.Equal(t, 9-i, item)
 	}
 
 	items = stack.PopN(10)
 	assert.Equal(t, 5, len(items))
 	for i, item := range items {
-		assert.Equal(t, 4-i, *item)
+		assert.Equal(t, 4-i, item)
 	}
 }
 
@@ -157,7 +157,7 @@ func BenchmarkStack_Push(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		stack := New[int](numberOfIterations)
 		for j := 0; j < numberOfIterations; j++ {
-			stack.Push(&j)
+			stack.Push(j)
 		}
 	}
 }
@@ -165,7 +165,7 @@ func BenchmarkStack_Push(b *testing.B) {
 func BenchmarkStack_Pop(b *testing.B) {
 	stack := New[int](numberOfIterations)
 	for i := 0; i < numberOfIterations; i++ {
-		stack.Push(&i)
+		stack.Push(i)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -182,7 +182,7 @@ func BenchmarkStack_PushAndPopRandomly(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for j := 0; j < numberOfIterations; j++ {
 			if stack.Size() == 0 || rand.Int() == 0 {
-				stack.Push(&j)
+				stack.Push(j)
 			} else {
 				stack.Pop()
 			}

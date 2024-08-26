@@ -13,7 +13,7 @@ func TestPopNFailWhileRoutinesPop(t *testing.T) {
 	var stack = Stack[int]{}
 
 	for i := 1; i <= 10; i++ {
-		stack.Push(&i)
+		stack.Push(i)
 	}
 
 	for i := 0; i < 1000; i++ {
@@ -45,7 +45,7 @@ func TestPopNFailWhileRoutinesPop(t *testing.T) {
 		assert.Zero(t, st.size, values)
 
 		for j := 1; j < len(values); j++ {
-			assert.Equal(t, *values[0]-j, *values[j])
+			assert.Equal(t, values[0]-j, values[j])
 		}
 	}
 }
@@ -54,7 +54,7 @@ func BenchmarkSyncedStack_Push(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		stack := NewSynced[int](numberOfIterations)
 		for j := 0; j < numberOfIterations; j++ {
-			stack.Push(&j)
+			stack.Push(j)
 		}
 	}
 }
@@ -62,7 +62,7 @@ func BenchmarkSyncedStack_Push(b *testing.B) {
 func BenchmarkSyncedStack_Pop(b *testing.B) {
 	stack := NewSynced[int](numberOfIterations)
 	for i := 0; i < numberOfIterations; i++ {
-		stack.Push(&i)
+		stack.Push(i)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -79,7 +79,7 @@ func BenchmarkSyncedStack_PushAndPopRandomly(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		for j := 0; j < numberOfIterations; j++ {
 			if stack.Size() == 0 || rand.Int() == 0 {
-				stack.Push(&j)
+				stack.Push(j)
 			} else {
 				stack.Pop()
 			}

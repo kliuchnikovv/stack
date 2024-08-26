@@ -6,7 +6,7 @@ package stack
 // If concurrent access from multiple locations
 // needed, use SyncedStack.
 type Stack[T any] struct {
-	buffer []*T
+	buffer []T
 	size   int
 }
 
@@ -15,11 +15,11 @@ func New[T any](capacity int) *Stack[T] {
 	if capacity < 0 {
 		capacity = 0
 	}
-	return &Stack[T]{buffer: make([]*T, 0, capacity)}
+	return &Stack[T]{buffer: make([]T, 0, capacity)}
 }
 
 // Push - adds a new element to the top of the stack.
-func (stack *Stack[T]) Push(value *T) {
+func (stack *Stack[T]) Push(value T) {
 	if stack.size == len(stack.buffer) {
 		stack.buffer = append(stack.buffer, value)
 	} else {
@@ -29,15 +29,15 @@ func (stack *Stack[T]) Push(value *T) {
 }
 
 // Peek - returns an item from the top of the stack without removing it.
-func (stack *Stack[T]) Peek() (*T, bool) {
+func (stack *Stack[T]) Peek() (T, bool) {
 	if stack.size == 0 {
-		return nil, false
+		return *new(T), false
 	}
 	return stack.buffer[stack.lastIndex()], true
 }
 
 // Pop - returns an item from the top of the stack and removes it from the stack.
-func (stack *Stack[T]) Pop() (*T, bool) {
+func (stack *Stack[T]) Pop() (T, bool) {
 	v, ok := stack.Peek()
 	if ok {
 		stack.size--
@@ -48,8 +48,8 @@ func (stack *Stack[T]) Pop() (*T, bool) {
 
 // PopN - returns N items (or less) from the top of the stack
 // in the order in which they are retrieved (LIFO).
-func (stack *Stack[T]) PopN(n int) []*T {
-	var result = make([]*T, 0, n)
+func (stack *Stack[T]) PopN(n int) []T {
+	var result = make([]T, 0, n)
 	if n <= 0 {
 		return result
 	}
@@ -73,8 +73,8 @@ func (stack *Stack[T]) IsEmpty() bool {
 }
 
 // ToSlice - returns slice representation of stack
-func (stack *Stack[T]) ToSlice() []*T {
-	var result = make([]*T, stack.size)
+func (stack *Stack[T]) ToSlice() []T {
+	var result = make([]T, stack.size)
 	for i := 0; i < len(result); i++ {
 		result[i] = stack.buffer[i]
 	}

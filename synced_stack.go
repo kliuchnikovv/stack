@@ -17,14 +17,14 @@ func NewSynced[T any](capacity int) *SyncedStack[T] {
 }
 
 // Push - adds a new element to the top of the stack.
-func (synced *SyncedStack[T]) Push(data *T) {
+func (synced *SyncedStack[T]) Push(data T) {
 	synced.mutex.Lock()
 	defer synced.mutex.Unlock()
 	synced.Stack.Push(data)
 }
 
 // Pop - returns an item from the top of the stack and removes it from the stack.
-func (synced *SyncedStack[T]) Pop() (*T, bool) {
+func (synced *SyncedStack[T]) Pop() (T, bool) {
 	synced.mutex.Lock()
 	defer synced.mutex.Unlock()
 	return synced.Stack.Pop()
@@ -32,7 +32,7 @@ func (synced *SyncedStack[T]) Pop() (*T, bool) {
 
 // PopN - returns N items (or less) from the top of the stack
 // in the order in which they are retrieved (LIFO).
-func (synced *SyncedStack[T]) PopN(n int) []*T {
+func (synced *SyncedStack[T]) PopN(n int) []T {
 	synced.mutex.Lock()
 	defer synced.mutex.Unlock()
 	return synced.Stack.PopN(n)
